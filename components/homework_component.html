@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>作業練習：元件變換</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="images/favicon.ico" rel="shortcut icon">
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/stylesheets/all.css">
+  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/solid.js"
+    integrity="sha384-+Ga2s7YBbhOD6nie0DzrZpJes+b2K1xkpKxTFFcx59QmVPaSA8c7pycsNaFwUK6l"
+    crossorigin="anonymous"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/regular.js"
+    integrity="sha384-t7yHmUlwFrLxHXNLstawVRBMeSLcXTbQ5hsd0ifzwGtN7ZF7RZ8ppM7Ldinuoiif"
+    crossorigin="anonymous"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js"
+    integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c"
+    crossorigin="anonymous"></script>
+  <script src="/javascripts/vendor.js"></script>
+
+</head>
+
+<body class="bg-lighter">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="/">Vue.js 練習手冊</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+      aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/basic/dev.html">基礎教學</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/template/basic.html">模板指令</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/components/basic.html">組件</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/api/vue_set.html">常用 API</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/es6/let_const.html">ES6</a>
+        </li>
+
+      </ul>
+    </div>
+  </nav>
+  <div class="container my-5">
+    <div class="row">
+
+      <div class="col-md-3">
+
+        <div>
+          <h6 class="text-capitalize text-muted">components</h6>
+
+
+          <a href="/components/basic.html" class="btn btn-block btn-link">
+            基礎元件
+          </a>
+
+
+
+          <a href="/components/function_return.html" class="btn btn-block btn-link">
+            元件必須使用 function return
+          </a>
+
+
+
+          <a href="/components/prop_basic.html" class="btn btn-block btn-link">
+            由外到內的資料傳遞
+          </a>
+
+
+          <a href="/components/prop_adv.html" class="btn btn-block btn-link">
+            Props 注意事項
+          </a>
+
+
+
+          <a href="/components/prop_type.html" class="btn btn-block btn-link">
+            Props 的型別
+          </a>
+
+
+
+          <a href="/components/emit.html" class="btn btn-block btn-link">
+            向外層傳送事件(Data)
+          </a>
+
+
+
+          <a href="/components/slot.html" class="btn btn-block btn-link">
+            Slot 插槽替換
+          </a>
+
+
+
+          <a href="/components/is.html" class="btn btn-block btn-link">
+            動態組建切換
+          </a>
+
+
+
+          <a href="/components/eventbus.html" class="btn btn-block btn-link">
+            Event Bus
+          </a>
+
+
+
+          <a href="/components/homework_component.html" class="btn btn-block btn-primary active">
+            作業練習：元件變換
+          </a>
+
+
+        </div>
+      </div>
+
+      <div class="col-md-9 post">
+        <!-- 練習開始 -->
+        <h1 class="mt-0 text-muted">作業練習：元件變換</h1>
+
+        <h3>模板練習作業：Ajax 資料內容呈現</h3>
+        <p>本作業一定要用到元件。</p>
+        <div class="alert alert-secondary">
+          <p>提示：</p>
+          <ol class="mb-0">
+            <li>將資料內容透過 "元件" 呈現</li>
+            <li>製作城市過濾選項</li>
+            <li>將內層資料透過 emit 傳遞到外層 (作為另一個關注城市的呈現)</li>
+            <li>依據不同污染呈現不同色彩</li>
+            <li>加分題：透過 localStorage 儲存上次關注的城市</li>
+          </ol>
+        </div>
+
+        <div id="app">
+
+          <select name="" id="" class="form-control mb-3" v-model="filter">
+            <option value="">--- 請選擇城市 ---</option>
+            <option :value="item" v-for="item in filterCountyOption">{{ item }}</option>
+          </select>
+
+          <div>
+            <h4>關注地區</h4>
+            <div class="card-columns followBlock" style="display: flex; flex-wrap: wrap;">
+              <air-card v-for="(item, i) in staredCountries" :city="item" :key="item.siteid" @follow-change="unfollowCity(item)">
+              </air-card>
+            </div>
+          </div>
+
+          <hr>
+
+          <div>
+            <h4>所有地區</h4>
+            <div class="card-columns" style="display: flex; flex-wrap: wrap;">
+              <air-card v-for="(item, i) in filterCounty" :city="item" :key="item.siteid"
+                @follow-change="followCity(item)"></air-card>
+            </div>
+          </div>
+
+        </div>
+
+
+
+        <!-- x template 1 start -->
+        <script type="text/x-template" id="airCard">
+          <div class="card" style="width: 31.7%;" :class="airColor">
+            <div class="card-header">{{ city.county }} - {{ city.sitename }}
+              <a href="#" class="float-right starColor starHover" @click.prevent="toggleFollow">
+                <i class="fas fa-star"></i>
+              </a>
+            </div>
+            <div class="card-body">
+              <ul class="list-unstyled">
+                <li>AQI 指數: {{ city.aqi}}</li>
+                <li>PM2.5:  {{ city["pm2.5"]}}</li>
+                <li>說明: {{ city.status }}</li>
+              </ul>
+              {{ city.publishtime }}
+            </div>
+          </div>
+        </script>
+        <!-- x template 1 end -->
+
+
+
+
+
+        <script>
+          // API 來源
+          // https://opendata.epa.gov.tw/Data/Contents/AQI/
+
+          Vue.component('air-card', {
+            template: '#airCard',
+            props: ['city'],
+            computed: {
+              airColor: function () {
+                if (this.city.aqi <= 50) {
+                  return 'status-aqi1';
+                } else if (this.city.aqi <= 100) {
+                  return 'status-aqi2';
+                } else if (this.city.aqi <= 150) {
+                  return 'status-aqi3';
+                } else if (this.city.aqi <= 200) {
+                  return 'status-aqi4';
+                } else if (this.city.aqi <= 300) {
+                  return 'status-aqi5';
+                } else if (this.city.aqi <= 500) {
+                  return 'status-aqi6';
+                } else {
+                  return 'status-aqi7';
+                }
+              },
+              // starColor: function () {
+              //   return this.city.isFollow ? 'followStarColor' : 'starColor';
+              // }
+            },
+            methods: {
+              toggleFollow: function () {
+                this.$emit('follow-change');
+              }
+            }
+          });
+
+
+          var app = new Vue({
+            el: '#app',
+            data: {
+              allCountries: [],
+              location: [],
+              staredID: [],
+              filter: ''
+            },
+            // 請在此撰寫 JavaScript
+            created: function () { //已建立物件後才讀的到資料
+              const vm = this;
+              // const api = 'http://opendata2.epa.gov.tw/AQI.json';
+              const api = 'https://data.epa.gov.tw/api/v2/aqx_p_432?api_key=794e2a69-8447-4245-ab3a-7d99f01f9383&limit=1000&sort=ImportDate%20desc&format=json';
+
+              // 使用 jQuery ajax
+              $.getJSON(api).then(function (allCountriesInfo) {
+                allCountriesInfo.records.forEach(function (item) {
+                  item.isFollow = false;
+                  vm.allCountries.push(item);
+                });
+              });              
+              vm.staredID = JSON.parse(localStorage.getItem('staredItemData'));
+            },
+            computed: {
+              filterCountyOption: function () {
+                const vm = this;
+                let countyOption = [];
+                vm.allCountries.forEach(el => countyOption.push(el.county));
+                let newCountyOption = Array.from(new Set(countyOption));
+                return newCountyOption;
+              },
+              filterCounty: function () {
+                const vm = this;
+                return vm.allCountries.filter(x => vm.staredID.indexOf(x.siteid) == -1);
+              },
+              staredCountries: function () {
+                const vm = this;
+                return vm.allCountries.filter(x => vm.staredID.indexOf(x.siteid) != -1);
+              }
+            },
+            methods: {
+              followCity: function (item) {
+                console.log('already followed');
+                var vm = this;
+                vm.staredID.push(item.siteid);
+                localStorage.setItem('staredItemData', JSON.stringify(vm.staredID));
+              },
+              unfollowCity: function (item) {
+                console.log('unfollowed');
+                var vm = this;
+                var unStareItem = vm.staredID.splice(vm.staredID.indexOf(item.siteid), 1);
+                localStorage.setItem('staredItemData', JSON.stringify(vm.staredID));
+              }
+            }
+          });
+        </script>
+
+        <!-- 
+狀態對應表
+'status-aqi1' '良好', 0~50
+'status-aqi2' '普通', 51~100
+'status-aqi3' '對敏感族群不健康', 101~150
+'status-aqi4' '對所有族群不健康', 151~200
+'status-aqi5' '非常不健康', 201~300
+'status-aqi6' '危害', 301~500
+-->
+        <style>
+          .status-aqi1 {
+            background-color: #37c595;
+          }
+
+          .status-aqi2 {
+            background-color: #ffff00;
+          }
+
+          .status-aqi3 {
+            background-color: #ff7e00;
+          }
+
+          .status-aqi4 {
+            background-color: #ff0000;
+          }
+
+          .status-aqi5 {
+            background-color: #8f3f97;
+          }
+
+          .status-aqi6 {
+            background-color: #7e0023;
+          }
+
+          .status-aqi7 {
+            background-color: #000000;
+          }
+
+          .starColor {
+            color: rgb(255, 255, 255);
+          }
+
+          .followBlock .starColor , .starHover:hover {
+            color: #33f3e9;
+          }
+        </style>
+
+
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

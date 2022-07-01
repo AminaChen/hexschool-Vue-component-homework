@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Todo 範例製作</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="images/favicon.ico" rel="shortcut icon">
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/stylesheets/all.css">
+  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/solid.js"
+    integrity="sha384-+Ga2s7YBbhOD6nie0DzrZpJes+b2K1xkpKxTFFcx59QmVPaSA8c7pycsNaFwUK6l"
+    crossorigin="anonymous"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/regular.js"
+    integrity="sha384-t7yHmUlwFrLxHXNLstawVRBMeSLcXTbQ5hsd0ifzwGtN7ZF7RZ8ppM7Ldinuoiif"
+    crossorigin="anonymous"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js"
+    integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c"
+    crossorigin="anonymous"></script>
+  <script src="/javascripts/vendor.js"></script>
+
+</head>
+
+<body class="bg-lighter">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="/">Vue.js 練習手冊</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+      aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/basic/dev.html">基礎教學</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/template/basic.html">模板指令</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/components/basic.html">組件</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/api/vue_set.html">常用 API</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/es6/let_const.html">ES6</a>
+        </li>
+
+      </ul>
+    </div>
+  </nav>
+  <div class="container my-5">
+    <div class="row">
+
+      <div class="col-md-3">
+
+        <div>
+          <h6 class="text-capitalize text-muted">basic</h6>
+
+
+          <a href="/basic/dev.html" class="btn btn-block btn-link">
+            Vue 的開發環境
+          </a>
+
+
+
+          <a href="/basic/instant.html" class="btn btn-block btn-link">
+            建立 Vue 的應用程式
+          </a>
+
+
+
+          <a href="/basic/mvvm.html" class="btn btn-block btn-link">
+            MVVM 是什麼樣的概念
+          </a>
+
+
+
+          <a href="/basic/directive.html" class="btn btn-block btn-link">
+            指令
+          </a>
+
+
+
+          <a href="/basic/if_for.html" class="btn btn-block btn-link">
+            模板語法的延伸 v-if 及 v-for
+          </a>
+
+
+
+          <a href="/basic/v_on.html" class="btn btn-block btn-link">
+            處理互動式行為 v-on 指令
+          </a>
+
+
+
+          <a href="/basic/defined_var.html" class="btn btn-block btn-link">
+            預先定義資料結構
+          </a>
+
+
+
+          <a href="/basic/modifiers.html" class="btn btn-block btn-link">
+            修飾符 與 縮寫
+          </a>
+
+
+
+          <a href="/basic/v_class.html" class="btn btn-block btn-link">
+            切換 Class
+          </a>
+
+
+
+          <a href="/basic/computed.html" class="btn btn-block btn-link">
+            計算屬性
+          </a>
+
+
+
+          <a href="/basic/form.html" class="btn btn-block btn-link">
+            表單雙向綁定
+          </a>
+
+
+
+          <a href="/basic/components.html" class="btn btn-block btn-link">
+            元件化
+          </a>
+
+
+
+          <a href="/basic/todo.html" class="btn btn-block btn-primary active">
+            Todo 範例練習
+          </a>
+
+
+
+          <a href="/basic/v_lifecycle.html" class="btn btn-block btn-link">
+            延伸介紹 - Vue 生命週期
+          </a>
+
+
+        </div>
+      </div>
+
+      <div class="col-md-9 post">
+        <!-- 練習開始 -->
+        <h1 class="mt-0 text-muted">Todo 範例製作</h1>
+
+        <div class="alert alert-secondary">
+          <ol class="mb-0">
+            <li>請跟隨課程完成此章節。</li>
+          </ol>
+        </div>
+
+
+        <style>
+          .delLine {
+            text-decoration: line-through;
+          }
+
+          /* .active{
+
+  } */
+        </style>
+
+        <div id="app">
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">待辦事項</span>
+            </div>
+            <input type="text" class="form-control" placeholder="準備要做的任務" v-model="newTask" @keyup.enter="addTask">
+            <div class="input-group-append">
+              <button class="btn btn-primary" type="button" @click="addTask(newTask)">新增</button>
+            </div>
+          </div>
+
+          <div class="card text-center">
+            <div class="card-header">
+              <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                  <a class="nav-link" href="#" :class="{active: visibility == 'all'}" @click.prevent="visibility = 'all'">全部</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#" :class="{active: visibility == 'ing'}" @click.prevent="visibility = 'ing'">進行中</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#" :class="{active: visibility == 'done'}" @click.prevent="visibility = 'done'">已完成</a>
+                </li>
+              </ul>
+            </div>
+
+            <ul class="list-group list-group-flush text-left">
+              <li class="list-group-item" v-for="(task, index) in filterTasks" @dblclick="editTask(task)">
+                <div class="d-flex" v-if="task.id !== catchTask.id">
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input" :id="task.id" v-model="task.completed">
+                    <label class="form-check-label" :for="task.id" :class="{delLine: task.completed}">
+                      {{task.content}}
+                    </label>
+                  </div>
+                  <button type="button" class="close ml-auto" @click="delTask(index)"aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <input type="text" class="form-control"
+                v-if="task.id === catchTask.id"
+                v-model="catchTaskContent"
+                @keyup.esc="cancelEdit"
+                @keyup.enter="doneEditTask(task)">
+              </li>
+            </ul>
+            
+            <!-- <li class="list-group-item">
+              <input type="text" class="form-control">
+            </li> -->
+
+            <div class="card-footer d-flex justify-content-between">
+              <span>還有 {{taskCountNotCompleted}} 筆任務未完成</span>
+              <a href="#" @click.prevent="delDoneTask(task)">清除已完成任務</a>
+            </div>
+
+          </div>
+        </div>
+
+
+
+
+
+
+        <script>
+
+          var app = new Vue({
+            el: '#app',
+            data: {
+              newTask: '',
+              taskList: [
+
+              ],
+              taskCount: 0,
+              visibility: 'all',
+              catchTask: {},
+              catchTaskContent: '',
+            },
+            computed: {
+              taskCountNotCompleted: function () {
+                return this.taskList.filter(function (x) { return x.completed !== true }).length;
+                // return this.taskList.filter(x => x.completed !== true).length; // 箭頭函數
+              },
+              filterTasks: function(){                
+                var newTaskList = [];
+                if(this.visibility == 'all'){
+                  return this.taskList;
+                }else if(this.visibility == 'ing'){
+                  this.taskList.forEach(function(todo){
+                    if(!todo.completed){
+                      newTaskList.push(todo);
+                    }
+                  })
+                  return newTaskList;
+                }else if(this.visibility == 'done'){
+                  var newTaskList = [];
+                  this.taskList.forEach(function(todo){
+                    if(todo.completed){
+                      newTaskList.push(todo);
+                    }                    
+                  })                  
+                  return newTaskList;
+                }return [];
+              },
+            },
+            methods: {
+              addTask: function () {
+                var todo = this.newTask.trim(); // 新任務 .把多餘的空白修掉
+                var timestamp = Math.floor(Date.now()); // 用時間轉成數字當id
+                if(!todo){return;}; // 如果去掉空白是false 則停止運行
+                this.taskList.push({
+                  id: timestamp,
+                  content: todo,
+                  completed: false,
+                  show: true,
+                });
+                this.newTask = '';
+              },
+              delTask: function (todo) {
+                this.taskList.splice(todo, 1);
+                this.taskCount -= 1;
+              },
+              delDoneTask: function (todo) {
+                var my = this;
+                this.taskList.forEach(function (todo) {
+                  if (todo.completed === true) {                    
+                    my.taskList.splice(todo, 1);
+                    console.log(my);
+                  }
+                });
+              },      
+              editTask: function(todo){
+                console.log(todo);
+                this.catchTask = todo; // 在li點兩下後，會抓取任務，存到新資料裡，再與dom做比較
+                this.catchTaskContent = todo.content; // 在li點兩下後，會抓取任務的內容，存到新資料裡
+              },
+              cancelEdit: function(){
+                this.catchTask = {};
+              },
+              doneEditTask: function(todo){
+                todo.content = this.catchTaskContent;
+                this.catchTaskContent = '';
+                this.catchTask = {};
+              },              
+            },
+          });
+
+        </script>
+
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
