@@ -155,7 +155,7 @@
           <div>
             <h4>所有地區</h4>
             <div class="card-columns" style="display: flex; flex-wrap: wrap;">
-              <air-card v-for="(item, i) in filterCounty" :city="item" :key="item.siteid"
+              <air-card v-for="(item, i) in noStaredCountries" :city="item" :key="item.siteid"
                 @follow-change="followCity(item)"></air-card>
             </div>
           </div>
@@ -246,10 +246,10 @@
                   vm.allCountries.push(item);
                 });
               });              
-              vm.staredID = JSON.parse(localStorage.getItem('staredItemData'));
+              vm.staredID = JSON.parse(localStorage.getItem('staredItemData')) || [];
             },
             computed: {
-              filterCountyOption: function () {
+              filterCountyOption: function (item) {
                 const vm = this;
                 let countyOption = [];
                 vm.allCountries.forEach(el => countyOption.push(el.county));
@@ -258,11 +258,26 @@
               },
               filterCounty: function () {
                 const vm = this;
-                return vm.allCountries.filter(x => vm.staredID.indexOf(x.siteid) == -1);
+                if(vm.filter !== ''){
+                  let choseCounty = vm.allCountries.filter(function(item){ return item.county == vm.filter; });
+                  return choseCounty;
+                }else{
+                  return vm.allCountries;
+                };                
+              },
+              noStaredCountries: function () {
+                const vm = this;
+                return vm.filterCounty.filter(x => vm.staredID.indexOf(x.siteid) == -1);
               },
               staredCountries: function () {
                 const vm = this;
-                return vm.allCountries.filter(x => vm.staredID.indexOf(x.siteid) != -1);
+                return vm.filterCounty.filter(x => vm.staredID.indexOf(x.siteid) != -1);
+                return vm.filterCounty.filter(function(x){
+                  if(vm.staredID.indexOf(x.siteid) != -1)
+                    return true; 
+                  else
+                    return false;
+                });
               }
             },
             methods: {
